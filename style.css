@@ -1,0 +1,131 @@
+body {
+  background: linear-gradient(to right, #c2c1bc86, #a7acb0);
+}
+
+.welcome-page {
+  display: flex;
+  margin: 1rem auto 15px !important;
+  padding: 0 1rem;
+  border-radius: 15px;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: nowrap;
+  text-align: center;
+  gap: 0.5vh;
+  border: 0.5rem ridge black;
+  background-color: seashell;
+  background-blend-mode: color;
+  outline: 0.5rem ridge lightgray;
+  height: 95vh;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+  background: linear-gradient(135deg, #e0f7fa, #fff);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hide {
+  display: none;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+  scale: 0;
+}
+
+.nav-bar {
+  display: flex;
+  width: calc(100% + 2.5rem);
+  justify-content: space-around;
+  color: white;
+  background-color: black;
+  border-radius: 0.5em 0em 0em 0em;
+}
+
+#title {
+  margin-bottom: 0;
+}
+
+#term {
+  margin: 0;
+  font-size: larger;
+}
+
+#term-image {
+  display: block;
+  width: 90vw;
+  max-width: 300px;
+  height: auto;
+  max-height: 25vh;
+  object-fit: contain;
+  border-radius: 0.5em;
+  margin-top: 5vh;
+  margin: 0;
+}
+
+.button {
+  display: flex;
+  flex-direction: row;
+}
+
+.choice-button {
+  display: block;
+  max-width: 20em;
+  width: 100%;
+  margin: 0.75rem auto;
+  padding: 0.5rem 1.25rem;
+  font-size: 0.7rem;
+  background-color: rgba(240, 237, 237, 0);
+  color: black;
+  border: 0.125rem solid #333;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.3 ease, transform 0.2s;
+}
+
+.choice-button:hover {
+  background-color: rgb(229, 222, 222);
+}
+
+.choice-button:disabled {
+  pointer-events: none;
+}
+
+#feedback {
+  font-size: 0.8rem;
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+#next-btn,
+#restart-btn {
+  padding: 12px 24px;
+  font-size: 1rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+next-btn:hover,
+restart-btn:hover {
+  background-color: #cbd3cb1f;
+}
+
+#logo:hover {
+  color: #f8b500;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
