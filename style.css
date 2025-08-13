@@ -54,6 +54,10 @@ body {
 
 #timer {
     color:red;
+    border-width: 5rem;
+    border-radius: 20%;
+    background-color: white;
+    width: 80px;
 }
 
 #title {
