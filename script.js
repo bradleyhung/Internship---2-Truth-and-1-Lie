@@ -352,6 +352,7 @@ function updateTime() {
     time.classList.remove("hide");
     time.textContent = secondsLeft;
     if (secondsLeft > 0) {
+        secondsLeft--;
         timeOutId = setTimeout(updateTime, 1000);
     }
     else {
