@@ -327,18 +327,16 @@ function global() {
     let gameTerms = [];
     let currentIndex = 0;
     let score = 0;
-    return {gameTerms, currentIndex, score};
+    let secondsLeft = 10;
+    let timeOutId;
+    return {gameTerms, currentIndex, score, secondsLeft, timeOutId};
 }
 
-let {gameTerms, currentIndex, score} = global();
+let {gameTerms, currentIndex, score, secondsLeft, timeOutId} = global();
 
 function shuffleQuestions(questions){
     //clears gameQuestions array
     gameTerms = []
-
-
-    // -- This while loop would be inefficient so we can create another data structure to store a duplicate of questions 
-    // and remove from questions once we append to gameTerms --
 
     while(gameTerms.length < 10){ // if we have 10 terms already, stop
         let randomNum = Math.floor(Math.random()*questions.length); // generate a random number between 0 and 30
@@ -347,6 +345,34 @@ function shuffleQuestions(questions){
         }
         gameTerms.push(questions[randomNum]); // add the term object to the gameTerms array.
     }
+}
+
+function updateTime() {
+    const time = document.getElementById("timer");
+    time.classList.remove("hide");
+    time.textContent = secondsLeft;
+    if (secondsLeft > 0) {
+        secondsLeft--;
+        timeOutId = setTimeout(updateTime, 1000);
+    }
+    else {
+        time.classList.add("hide");
+        const feedback = document.getElementById("feedback");
+        feedback.classList.remove("hide");
+        feedback.textContent = `❌ You ran out of time!"`;
+        const choicesContainer = document.getElementById("choices");
+        const buttons = choicesContainer.querySelectorAll("button"); // get all the buttons inside the choices container
+        buttons.forEach(btn => btn.disabled = true); // disable all the buttons so the user cant click again
+        const nextBtn = document.getElementById("next-btn"); // show the next button so the us
+        nextBtn.classList.remove("hide");
+        nextQuestion();
+    }
+}
+
+function stopTime() {
+    clearTimeout(timeOutId);
+    const time = document.getElementById("timer");
+    time.classList.add("hide");
 }
 
 /* starts the game 
@@ -365,6 +391,8 @@ function showQuestion(){
     const term = document.getElementById("term");
     term.innerText = randomTerm;
 
+    updateTime();
+
     // Retrieve the image element and updates the new images
     const img = document.getElementById("term-image");
     const randomImg = gameTerms[currentIndex].imageUrl;
@@ -374,16 +402,13 @@ function showQuestion(){
     const choicesContainer = document.getElementById("choices");
     choicesContainer.classList.remove("hide");
     const randomStatement = gameTerms[currentIndex].statements;
-    let count = 0;
 
-    // -- Fix Below -- It runs too many iterations in dev tool 
     randomStatement.forEach((statement, index) => {
         const button = document.createElement("button");
         button.textContent = statement;
         button.classList.add("choice-button");
         button.id = `button-${index}`
         button.onclick = (e) => {
-            e.preventDefault();
             e.preventDefault();
             let currentTerm = gameTerms[currentIndex];
             const answerIndex = currentTerm.lieIndex;
@@ -403,17 +428,16 @@ function handleAnswer(userChoice, answerIndex, answerStatement){
     const choicesContainer = document.getElementById("choices");
     const buttons = choicesContainer.querySelectorAll("button"); // get all the buttons inside the choices container
     buttons.forEach(btn => btn.disabled = true); // disable all the buttons so the user cant click again
-    if(answerIndex === userChoice) {  // If they picked the lie correctly, show a "Correct" message in green
+    if (answerIndex === userChoice) { // If they picked the lie correctly, show a "Correct" message in green
         feedback.textContent = "✅ Correct! You found the lie."
         feedback.style.color = "green";
         score++;
         const totalScore = document.getElementById("score")
-        totalScore.textContent = `Current Score: ${score}`
+        totalScore.textContent = `Score: ${score}`
         const correctButton = document.getElementById(`button-${userChoice}`);
         correctButton.style.backgroundColor = 'lightgreen';
     } else {
         // If they picked a truth by mistake, show the real lie and mark it wrong
-        // const correctLie = currentQuestion.statements[currentQuestion.lieIndex];
         feedback.textContent = `❌ Nope! The lie was: "${answerStatement}"`;
         feedback.style.color = "red";
         const wrongButton = document.getElementById(`button-${userChoice}`)
@@ -421,6 +445,7 @@ function handleAnswer(userChoice, answerIndex, answerStatement){
     }
     const nextBtn = document.getElementById("next-btn"); // show the next button so the us
     nextBtn.classList.remove("hide");
+    stopTime();
     nextQuestion();
 }
 
@@ -429,11 +454,8 @@ function handleAnswer(userChoice, answerIndex, answerStatement){
 2. if no more questions, call endGame() to show results
 */
 function nextQuestion(){
-    //currentIndex++;
+    secondsLeft = 10;
     const nextBtn = document.getElementById("next-btn");
-    
-    //const feedback = document.getElementById("feedback");
-    //const choices = document.getElementById("choices");
     nextBtn.onclick = () => {
         const feedback = document.getElementById("feedback");
         const choices = document.getElementById("choices");
