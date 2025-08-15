@@ -347,14 +347,17 @@ function shuffleQuestions(questions){
     }
 }
 
+// Adds a 10s timer for the user to answer
 function updateTime() {
     const time = document.getElementById("timer");
     time.classList.remove("hide");
     time.textContent = secondsLeft;
+    // Decrements the counter by 1 for every second
     if (secondsLeft > 0) {
         secondsLeft--;
         timeOutId = setTimeout(updateTime, 1000);
     }
+    // When 10s are up, disable buttons and brings the next question button
     else {
         time.classList.add("hide");
         const feedback = document.getElementById("feedback");
@@ -369,6 +372,7 @@ function updateTime() {
     }
 }
 
+// Stops the timer when user gets the question right or wrong
 function stopTime() {
     clearTimeout(timeOutId);
     const time = document.getElementById("timer");
